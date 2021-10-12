@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+  <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <title>Chart_practice</title>
+  
+
+</head>
+
+<body>
+<!-- 問題在下方 -->
+  <div class="container">
+
+
+    <canvas id="myChart" width="375" height="400 " style="background-color: rgb(255, 255, 255);"></canvas>
+    
+
+  </div>
+
+  <script>
+
+    const time1 = []
+    const dataArray = []
+    const ts = [];
+    const hs = [];
+    const ts2 = [];
+
+ 
+
+    const api_url = 'js/testVerticalCurve_heartrate_month.json'
+
+    async function getISS() {
+
+
+      const response = await fetch(api_url);
+      const data = await response.json();
+      // var (min, max) = getminmax(data.data);
+
+      for (var i = 0; i < data.data.length; i++) {
+
+        // if (inrange(data.data[i].x,,)) {
+        const count = ts.push(data.data[i].x);
+        const count2 = hs.push(data.data[i].y);
+        // }
+
+      }
+
+
+      for (var i = 0; i < ts.length; i++) {
+        ts2[i] = new Date(ts[i]).toLocaleDateString("zh-TW");
+
+      }
+      console.log(hs, ts2);
+    }
+
+    getISS();
+
+//問題：我想要取 getISS 的 hs & ts2 的 array value 到下方的 chartIT(), 讓他可以畫圖表出來 該怎麼做比較好？
+
+    async function chartIt() {
+
+      await getISS();
+
+      const ctx = document.getElementById('myChart');
+      const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ts2,
+          datasets: [{
+            label: 'Heart Rate',
+            data: hs,
+            fill: false,
+            tension: 0.1,
+
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+
+
+          }],
+
+        }
+
+      });
+      chartIt();
+
+
+
+    }
+  </script>
+
+
+</body>
+
+</html>
